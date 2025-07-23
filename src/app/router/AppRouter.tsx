@@ -5,7 +5,7 @@ import type { RouteObject } from 'react-router-dom';
 const routeConfig: RouteObject[] = [
   {
     path: '/',
-    element: <div>123</div>,
+    element: <div>1234</div>,
   },
 ];
 

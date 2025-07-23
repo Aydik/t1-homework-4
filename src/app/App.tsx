@@ -3,7 +3,7 @@ import { AppRouter } from 'app/router/AppRouter.tsx';
 
 function App() {
   return (
-    <BrowserRouter basename="/t1-homework-1/">
+    <BrowserRouter basename="/t1-homework-4/">
       <AppRouter />
     </BrowserRouter>
   );
