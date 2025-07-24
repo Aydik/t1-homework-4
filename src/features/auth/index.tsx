@@ -1,22 +1,26 @@
-import { type FC } from 'react';
+import { type FC, useEffect } from 'react';
 import styles from './index.module.scss';
 import { Typography } from 'shared/ui/Typography';
 import { Button, InputField } from '@admiral-ds/react-ui';
 import { useForm } from 'react-hook-form';
 import type { LoginDto } from 'features/auth/types';
-import { loginUser } from 'features/auth/services/auth.service.ts';
+import { loginUser, getProfile } from 'features/auth/services/auth.service.ts';
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getProfile().then(() => navigate('/'));
+  }, [navigate]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
   } = useForm<LoginDto>();
-
-  const navigate = useNavigate();
 
   const onSubmit = async (data: LoginDto) => {
     try {
