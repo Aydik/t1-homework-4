@@ -4,6 +4,7 @@ import type { RouteObject } from 'react-router-dom';
 import { LoginPage } from 'pages/LoginPage';
 import { MainLayout } from 'app/layout/MainLayout';
 import { IndexPage } from 'pages/IndexPage';
+import { UserPage } from 'pages/UserPage';
 
 const routeConfig: RouteObject[] = [
   {
@@ -12,6 +13,10 @@ const routeConfig: RouteObject[] = [
       {
         path: '/',
         element: <IndexPage />,
+      },
+      {
+        path: '/user/:id',
+        element: <UserPage />,
       },
     ],
   },
