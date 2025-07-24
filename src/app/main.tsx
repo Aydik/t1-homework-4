@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
 import { LIGHT_THEME, FontsVTBGroup, DropdownProvider } from '@admiral-ds/react-ui';
 import App from './App.tsx';
+import './styles/index.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
