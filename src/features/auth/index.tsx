@@ -1,4 +1,4 @@
-import { type FC, useEffect } from 'react';
+import { type FC, useCallback, useEffect } from 'react';
 import styles from './index.module.scss';
 import { Typography } from 'shared/ui/Typography';
 import { Button, InputField } from '@admiral-ds/react-ui';
@@ -22,25 +22,28 @@ export const LoginForm: FC = () => {
     setError,
   } = useForm<LoginDto>();
 
-  const onSubmit = async (data: LoginDto) => {
-    try {
-      await loginUser({
-        email: data.email,
-        password: data.password,
-      });
-      navigate('/');
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response?.status === 401) {
-        setError('password', {
-          type: 'manual',
-          message: 'Неверный email или пароль',
+  const onSubmit = useCallback(
+    async (data: LoginDto) => {
+      try {
+        await loginUser({
+          email: data.email,
+          password: data.password,
         });
-      } else {
-        console.error('Ошибка авторизации:', error);
+        navigate('/');
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status === 401) {
+          setError('password', {
+            type: 'manual',
+            message: 'Неверный email или пароль',
+          });
+        } else {
+          console.error('Ошибка авторизации:', error);
+        }
       }
-    }
-  };
+    },
+    [navigate, setError],
+  );
 
   return (
     <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
