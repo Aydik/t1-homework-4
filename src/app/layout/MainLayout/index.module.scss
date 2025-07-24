@@ -1,0 +1,20 @@
+.mainLayout {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.outletWrapper {
+  flex-grow: 1;
+  overflow-y: auto;
+}
