@@ -20,4 +20,15 @@ export default defineConfig({
       shared: path.resolve(__dirname, './src/shared'),
     },
   },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        changeOrigin: true,
+        secure: false,
+        target: 'http://localhost:4000',
+      },
+    },
+    strictPort: true,
+  },
 });

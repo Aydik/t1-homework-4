@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@admiral-ds/react-ui": "^8.52.2",
+    "axios": "^1.11.0",
+    "js-cookie": "^3.0.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.61.1",

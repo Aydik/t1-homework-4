@@ -4,16 +4,38 @@ import { Typography } from 'shared/ui/Typography';
 import { Button, InputField } from '@admiral-ds/react-ui';
 import { useForm } from 'react-hook-form';
 import type { LoginDto } from 'features/auth/types';
+import { loginUser } from 'features/auth/services/auth.service.ts';
+import type { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginDto>();
 
-  const onSubmit = (data) => {
-    console.log('Данные формы:', data);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: LoginDto) => {
+    try {
+      await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+      navigate('/');
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 401) {
+        setError('password', {
+          type: 'manual',
+          message: 'Неверный email или пароль',
+        });
+      } else {
+        console.error('Ошибка авторизации:', error);
+      }
+    }
   };
 
   return (
@@ -29,7 +51,7 @@ export const LoginForm: FC = () => {
             {...register('email', {
               required: 'Введите email',
               pattern: {
-                value: /^\S+@\S+\.\S+$/,
+                value: /^\S+@\S+\.[A-Za-z]+$/,
                 message: 'Неверный формат email',
               },
             })}
