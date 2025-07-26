@@ -8,6 +8,15 @@ import { loginUser, getProfile } from 'features/auth/services/auth.service.ts';
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Компонент формы авторизации.
+ *
+ * Отображает форму входа с полями для email и пароля.
+ * При успешной авторизации перенаправляет пользователя на главную страницу.
+ * Если пользователь уже авторизован — сразу перенаправляет без отображения формы.
+ *
+ * Использует React Hook Form для управления состоянием формы и валидацией.
+ */
 export const LoginForm: FC = () => {
   const navigate = useNavigate();
 

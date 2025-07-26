@@ -7,6 +7,13 @@ interface Props {
   id: string;
 }
 
+/**
+ * Кнопка для перехода на страницу редактирования пользователя.
+ *
+ * При клике выполняется навигация к маршруту редактирования пользователя по его ID.
+ *
+ * @param {string} id - ID пользователя, для которого открывается страница редактирования.
+ */
 export const UpdateUserButton: FC<Props> = ({ id }) => {
   const navigate = useNavigate();
   return (

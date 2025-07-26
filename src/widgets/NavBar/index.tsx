@@ -4,6 +4,14 @@ import { PAGES } from 'widgets/NavBar/constants';
 import { NavLink } from 'widgets/NavBar/ui/NavLink';
 import { useLocation } from 'react-router-dom';
 
+/**
+ * Компонент `NavBar` — это навигационная панель, отображающая список ссылок на страницы.
+ *
+ * Использует текущий путь из маршрутизатора для подсветки активной ссылки.
+ *
+ * Отображает ссылки, заданные в константе `PAGES`, с помощью компонента `NavLink`.
+ */
+
 export const NavBar: FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;

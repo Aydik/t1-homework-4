@@ -5,6 +5,15 @@ import { NavBar } from 'widgets/NavBar';
 import { Header } from 'widgets/Header';
 import { getProfile } from 'features/auth/services/auth.service.ts';
 
+/**
+ * Компонент `MainLayout` — это главный макет приложения.
+ *
+ * При монтировании проверяет профиль пользователя (авторизацию).
+ * Если профиль не получен (пользователь не авторизован), перенаправляет на страницу логина.
+ *
+ * Вёрстка включает боковую навигационную панель (`NavBar`),
+ * верхний хедер (`Header`) и область для отображения вложенных маршрутов (`Outlet`).
+ */
 export const MainLayout: FC = () => {
   const navigate = useNavigate();
   useLayoutEffect(() => {
