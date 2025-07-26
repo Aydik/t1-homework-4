@@ -75,7 +75,9 @@ export const UsersList: FC = () => {
         actions: (
           <div className={styles.actions}>
             <UpdateUserButton key={user.id} id={user.id} />
-            <DeleteUserButton key={user.id} id={user.id} updateUsers={fetchUsers} />
+            {user.id !== '1' && (
+              <DeleteUserButton key={user.id} id={user.id} updateUsers={fetchUsers} />
+            )}
           </div>
         ),
       })),
