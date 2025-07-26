@@ -19,7 +19,8 @@
     "react-hook-form": "^7.61.1",
     "react-router-dom": "^7.6.3",
     "sass": "^1.89.2",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
