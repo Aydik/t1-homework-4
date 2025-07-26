@@ -58,6 +58,10 @@ export const UsersList: FC = () => {
 
   const fetchUsers = () => getUsers().then((users) => setUsers(users));
 
+  const deleteUser = (id: string) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -76,7 +80,11 @@ export const UsersList: FC = () => {
           <div className={styles.actions}>
             <UpdateUserButton key={user.id} id={user.id} />
             {user.id !== '1' && (
-              <DeleteUserButton key={user.id} id={user.id} updateUsers={fetchUsers} />
+              <DeleteUserButton
+                key={user.id}
+                id={user.id}
+                updateUsers={() => deleteUser(user.id)}
+              />
             )}
           </div>
         ),
