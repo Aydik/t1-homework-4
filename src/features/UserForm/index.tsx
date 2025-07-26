@@ -82,6 +82,11 @@ export const UserForm: FC<Props> = ({ id }) => {
     }
   }, [id, navigate]);
 
+  useEffect(() => {
+    const fullName = formState.name + ' ' + formState.surName;
+    if (fullName.length > 0) handleChange('fullName', fullName);
+  }, [formState.surName, formState.name]);
+
   const handleChange = <K extends keyof UserFormState>(field: K, value: UserFormState[K]) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
@@ -183,7 +188,7 @@ export const UserForm: FC<Props> = ({ id }) => {
           value={formState.fullName}
           onChange={(e) => handleChange('fullName', e.target.value)}
           placeholder="Введите полное имя"
-          label="Полное имя"
+          label="Полное имя (заполянется автоматически)"
           status={errors.fullName ? 'error' : undefined}
           extraText={errors.fullName}
           required
