@@ -12,3 +12,6 @@ export interface User {
   employment?: EmploymentType;
   userAgreement?: boolean;
 }
+
+export type UserCreateDto = Omit<User, 'id'>;
+export type UserPatchDto = Omit<User, 'id' | 'userAgreement' | 'email'>;
