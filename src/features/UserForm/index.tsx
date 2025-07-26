@@ -12,18 +12,19 @@ import styles from './index.module.scss';
 import { Typography } from 'shared/ui/Typography';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { userSchema } from 'features/UserForm/schemas';
 import { employmentOptions } from 'shared/types';
 import { formatPhone, formatPhoneBeforeRequest } from 'shared/utils/phoneFormatter.ts';
 import { ValidationError } from 'yup';
 import { createUser, getUserById, updateUser } from 'entities/User/services/user.service.ts';
-import type { UserCreateDto } from 'entities/User/types';
+import type { UserCreateDto, UserPatchDto } from 'entities/User/types';
+import { AxiosError } from 'axios';
+import { updateUserSchema, createUserSchema } from 'features/UserForm/schemas';
 
 interface Props {
   id?: string;
 }
 
-type UserFormState = yup.InferType<typeof userSchema>;
+type UserFormState = yup.InferType<typeof createUserSchema>;
 
 export const UserForm: FC<Props> = ({ id }) => {
   const navigate = useNavigate();
@@ -65,6 +66,19 @@ export const UserForm: FC<Props> = ({ id }) => {
           navigate('/');
           alert('Пользователь не найден');
         });
+    } else {
+      setFormState({
+        name: '',
+        surName: '',
+        fullName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        birthDate: undefined,
+        telephone: '',
+        employment: '',
+        userAgreement: false,
+      });
     }
   }, [id, navigate]);
 
@@ -74,30 +88,41 @@ export const UserForm: FC<Props> = ({ id }) => {
 
   const handleSubmit = async () => {
     try {
-      const validated = await userSchema.validate(formState, { abortEarly: false });
+      setError(null);
 
-      const prepared: UserCreateDto = {
-        name: validated.name.trim(),
-        surName: validated.surName.trim(),
-        fullName: validated.fullName.trim(),
-        email: validated.email.trim(),
-        password: validated.password,
-        birthDate: validated.birthDate?.toISOString() ?? undefined,
-        telephone: validated.telephone?.trim()
-          ? formatPhoneBeforeRequest(validated.telephone)
-          : undefined,
-        employment: validated.employment,
-        userAgreement: validated.userAgreement,
-      };
+      if (id) {
+        const validated = await updateUserSchema.validate(formState, { abortEarly: false });
+        const prepared: UserPatchDto = {
+          name: validated.name.trim(),
+          surName: validated.surName.trim(),
+          fullName: validated.fullName.trim(),
+          birthDate: validated.birthDate?.toISOString() ?? undefined,
+          telephone: validated.telephone?.trim()
+            ? formatPhoneBeforeRequest(validated.telephone)
+            : undefined,
+          employment: validated.employment,
+          userAgreement: validated.userAgreement,
+        };
+        await updateUser(id, prepared);
+      } else {
+        const validated = await createUserSchema.validate(formState, { abortEarly: false });
+        const prepared: UserCreateDto = {
+          name: validated.name.trim(),
+          surName: validated.surName.trim(),
+          fullName: validated.fullName.trim(),
+          email: validated.email.trim(),
+          password: validated.password.trim(),
+          birthDate: validated.birthDate?.toISOString() ?? undefined,
+          telephone: validated.telephone?.trim()
+            ? formatPhoneBeforeRequest(validated.telephone)
+            : undefined,
+          employment: validated.employment,
+          userAgreement: validated.userAgreement,
+        };
+        await createUser(prepared);
+      }
 
-      const request = id ? updateUser(id, prepared) : createUser(prepared);
-      request
-        .then(() => {
-          navigate('/');
-        })
-        .catch(() => {
-          setError('Произошла ошибка при сохранении пользователя');
-        });
+      navigate('/');
     } catch (err) {
       if (err instanceof ValidationError) {
         const formErrors: Partial<Record<keyof UserFormState, string>> = {};
@@ -107,6 +132,13 @@ export const UserForm: FC<Props> = ({ id }) => {
           }
         });
         setErrors(formErrors);
+      } else if (err instanceof AxiosError && err?.response?.status === 409) {
+        setErrors((prev) => ({
+          ...prev,
+          email: 'Пользователь с таким email уже существует',
+        }));
+      } else {
+        setError('Произошла ошибка при сохранении пользователя');
       }
     }
   };
