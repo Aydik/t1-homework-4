@@ -1,69 +1,56 @@
-# React + TypeScript + Vite
+# User Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA-приложение на React + TypeScript для управления пользователями. Позволяет создавать, редактировать, удалять и просматривать список пользователей с детальной информацией.
 
-Currently, two official plugins are available:
+## Возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Просмотр списка пользователей с информацией: имя, фамилия, email, дата рождения, телефон, занятость
+- Создание нового пользователя через удобную форму с валидацией
+- Редактирование существующего пользователя
+- Удаление пользователей
+- Валидация данных с помощью yup
+- Автоматическое форматирование телефона и даты
+- Навигация без перезагрузки (SPA)
+- Адаптивный и современный UI с использованием AdmiralDS
+- Авторизация с защитой маршрутов — если нет профиля, редирект на страницу логина
 
-## Expanding the ESLint configuration
+## Стек технологий
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React + TypeScript**
+- **Vite** – сборка проекта
+- **React Router v6** – маршрутизация
+- **Axios** – HTTP-запросы
+- **AdmiralDS** – UI-компоненты
+- **css-modules** – стилизация
+- **React Hook Form** – работа с формами
+- **Yup** – валидация данных
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Маршруты
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- `/` — Список пользователей
+- `/user/:id` — Страница редактирования пользователя
+- `/user/create` — Создание нового пользователя
+- `/login` — Страница входа (авторизация)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Запуск проекта
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. **Установите Backend по ссылке, запустите по инструкции:**
+   ```sh 
+   https://github.com/Pardeg/forms-server
+   ```
+2. **Клонируйте репозиторий:**
+   ```sh 
+   git clone https://github.com/Aydik/t1-homework-4
+   ```
+3. **Установите зависимости:**
+   ```sh
+   npm install
+   ```
+4. **Запустите приложение:**
+   ```sh
+   npm run dev
+   ```
+5. **Откройте в браузере:**
+   ```sh
+   http://localhost:5173/t1-homework-4/
+   ```
