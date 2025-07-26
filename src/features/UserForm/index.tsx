@@ -19,6 +19,7 @@ import { createUser, getUserById, updateUser } from 'entities/User/services/user
 import type { UserCreateDto, UserPatchDto } from 'entities/User/types';
 import { AxiosError } from 'axios';
 import { updateUserSchema, createUserSchema } from 'features/UserForm/schemas';
+import { formatDate } from 'shared/utils/dateFormatter.ts';
 
 interface Props {
   id?: string;
@@ -65,8 +66,8 @@ export const UserForm: FC<Props> = ({ id }) => {
             email: user.email,
             password: '',
             confirmPassword: '',
-            birthDate: user.birthDate ? new Date(user.birthDate) : undefined,
-            telephone: user.telephone ?? '',
+            birthDate: user.birthDate,
+            telephone: user.telephone ? formatPhone(user.telephone) : '',
             employment: user.employment ?? '',
             userAgreement: user.userAgreement ?? false,
           });
@@ -110,7 +111,7 @@ export const UserForm: FC<Props> = ({ id }) => {
           name: validated.name.trim(),
           surName: validated.surName.trim(),
           fullName: validated.fullName.trim(),
-          birthDate: validated.birthDate?.toISOString() ?? undefined,
+          birthDate: validated.birthDate,
           telephone: validated.telephone?.trim()
             ? formatPhoneBeforeRequest(validated.telephone)
             : undefined,
@@ -126,13 +127,14 @@ export const UserForm: FC<Props> = ({ id }) => {
           fullName: validated.fullName.trim(),
           email: validated.email.trim(),
           password: validated.password.trim(),
-          birthDate: validated.birthDate?.toISOString() ?? undefined,
+          birthDate: validated.birthDate,
           telephone: validated.telephone?.trim()
             ? formatPhoneBeforeRequest(validated.telephone)
             : undefined,
           employment: validated.employment,
           userAgreement: validated.userAgreement,
         };
+        alert(prepared.birthDate);
         await createUser(prepared);
       }
 
@@ -243,7 +245,7 @@ export const UserForm: FC<Props> = ({ id }) => {
         <div className={styles.fieldsGroup}>
           <InputField
             key="phoneNumber"
-            value={formState.telephone ?? ''}
+            value={formState.telephone ?? undefined}
             onChange={(e) => handleChange('telephone', formatPhone(e.target.value))}
             placeholder="+7 (999) 999 99 99"
             label="Телефон"
@@ -251,10 +253,11 @@ export const UserForm: FC<Props> = ({ id }) => {
             extraText={errors.telephone}
           />
           <DateField
+            data-container-id="birthDateField"
             key="birthDate"
-            value={formState.birthDate?.toString() ?? ''}
+            value={formState.birthDate ? formatDate(formState.birthDate) : undefined}
             onChange={(e) => handleChange('birthDate', new Date(e.target.value))}
-            placeholder="YYYY-MM-DD"
+            placeholder="DD.MM.YYYY"
             label="Дата рождения"
             status={errors.birthDate ? 'error' : undefined}
             extraText={errors.birthDate}
