@@ -5,6 +5,9 @@ import { getUsers } from 'entities/User/services/user.service.ts';
 import { type EmploymentType, translateEmployment } from 'shared/types';
 import { formatPhone } from 'shared/utils/phoneFormatter.ts';
 import { formatDate } from 'shared/utils/dateFormatter.ts';
+import { UpdateUserButton } from 'features/UpdateUserButton';
+import type { User } from 'entities/User/types';
+import { DeleteUserButton } from 'features/DeleteUserButton';
 
 const columns: Column[] = [
   {
@@ -50,23 +53,34 @@ const columns: Column[] = [
 ];
 
 export const UsersList: FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
   const [userRows, setUserRows] = useState<TableRow[]>([]);
 
+  const fetchUsers = () => getUsers().then((users) => setUsers(users));
+
   useEffect(() => {
-    getUsers().then((users) =>
-      setUserRows(
-        users.map((user) => ({
-          id: user.id,
-          name: user.name,
-          surName: user.surName,
-          email: user.email,
-          birthDate: user.birthDate ? formatDate(user.birthDate) : '',
-          telephone: user.telephone ? formatPhone(user.telephone) : '',
-          employment: user.employment ? translateEmployment(user.employment as EmploymentType) : '',
-        })),
-      ),
-    );
+    fetchUsers();
   }, []);
+
+  useEffect(() => {
+    setUserRows(
+      users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        surName: user.surName,
+        email: user.email,
+        birthDate: user.birthDate ? formatDate(user.birthDate) : '',
+        telephone: user.telephone ? formatPhone(user.telephone) : '',
+        employment: user.employment ? translateEmployment(user.employment as EmploymentType) : '',
+        actions: (
+          <div className={styles.actions}>
+            <UpdateUserButton key={user.id} id={user.id} />
+            <DeleteUserButton key={user.id} id={user.id} updateUsers={fetchUsers} />
+          </div>
+        ),
+      })),
+    );
+  }, [users]);
 
   return <Table className={styles.table} columnList={columns} rowList={userRows} />;
 };

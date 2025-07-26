@@ -1,0 +1,17 @@
+.button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--admiral-color-Primary_Primary60Main, #0062FF);
+  opacity: 0.8;
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
