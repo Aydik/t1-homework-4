@@ -54,3 +54,9 @@ SPA-приложение на React + TypeScript для управления п�
    ```sh
    http://localhost:5173/t1-homework-4/
    ```
+
+## Дефолтная учетка 
+
+email - `admin@inno.tech`
+password - `admin`
+   
