@@ -1,17 +1,15 @@
-import type { EmploymentType } from 'shared/types';
-
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  surName: string;
   fullName: string;
   email: string;
   password: string;
   birthDate?: string;
-  phoneNumber?: string;
-  employment?: EmploymentType;
+  telephone?: string;
+  employment?: string;
   userAgreement?: boolean;
 }
 
 export type UserCreateDto = Omit<User, 'id'>;
-export type UserPatchDto = Omit<User, 'id' | 'userAgreement' | 'email'>;
+export type UserPatchDto = Omit<User, 'id' | 'password' | 'email'>;

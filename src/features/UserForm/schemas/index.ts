@@ -1,18 +1,20 @@
 import * as yup from 'yup';
 
 export const userSchema = yup.object({
-  id: yup.string().required(),
+  name: yup.string().max(64, 'Максимальная длина — 64 символа').required('Имя обязательно'),
 
-  firstName: yup.string().max(64, 'Максимальная длина — 64 символа').required('Имя обязательно'),
-
-  lastName: yup.string().max(64, 'Максимальная длина — 64 символа').required('Фамилия обязательна'),
+  surName: yup.string().max(64, 'Максимальная длина — 64 символа').required('Фамилия обязательна'),
 
   fullName: yup
     .string()
     .max(130, 'Максимальная длина — 130 символов')
     .required('Полное имя обязательно'),
 
-  email: yup.string().email('Неверный формат email').required('Поле обязательно'),
+  email: yup
+    .string()
+    .email('Неверный формат email')
+    .matches(/^[^\s@]+@[^\s@]+\.[A-Za-z]+$/, 'Неверный формат email')
+    .required('Email обязателен'),
 
   password: yup.string().required('Пароль обязателен'),
 
@@ -23,15 +25,16 @@ export const userSchema = yup.object({
 
   birthDate: yup.date().typeError('Неверный формат даты').optional(),
 
-  phoneNumber: yup
+  telephone: yup
     .string()
-    .matches(/^\+7\d{10}$/, 'Неверный формат телефона. Пример: +79991231231')
+    .test(
+      'is-valid-phone',
+      'Неверный формат телефона. Пример: +7 (999) 123 45 67',
+      (value) => !value || /^\+7 \(\d{3}\) \d{3} \d{2} \d{2}$/.test(value),
+    )
     .optional(),
 
   employment: yup.string().optional(),
 
-  userAgreement: yup
-    .boolean()
-    .oneOf([true], 'Необходимо согласие с пользовательским соглашением')
-    .optional(),
+  userAgreement: yup.boolean().optional(),
 });
